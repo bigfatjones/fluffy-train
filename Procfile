@@ -1,2 +1,2 @@
-web: gunicorn web_monitor:beautifulsoup
+web: gunicorn web_monitor.py:beautifulsoup
 
