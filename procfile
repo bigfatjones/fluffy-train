@@ -1,5 +1,2 @@
-git add .
-git commit -m "Procfile"
-git push heroku master
-web: gunicorn app:app
+web: gunicorn web_monitor:dropmouse
 
