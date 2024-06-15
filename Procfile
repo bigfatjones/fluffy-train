@@ -1,2 +1,2 @@
-web: gunicorn web_monitor:dropmouse
+web: gunicorn web_monitor.py:dropmouse
 
