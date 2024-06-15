@@ -1,9 +1,12 @@
+from flask import Flask, request, render_template
 import requests
 from bs4 import BeautifulSoup
-import time
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+import threading
+
+app = Flask(dropmouse)
 
 def scrape_webpage(url):
     print("Scraping webpage...")
@@ -30,29 +33,33 @@ def send_email(sender_email, receiver_email, password, subject, message):
     except Exception as e:
         print("Error occurred while sending email:", str(e))
 
-def send_initial_notification(sender_email, receiver_email, password):
-    subject = "Webpage Monitoring Started"
-    message = "The webpage monitoring process has started. You will receive email notifications for any updates."
-    send_email(sender_email, receiver_email, password, subject, message)
+@app.route('/', methods=['GET', 'POST'])
+def home():
+    if request.method == 'POST':
+        url = request.form.get('url')
+        sender_email = request.form.get('sender_email')
+        receiver_email = request.form.get('receiver_email')
+        password = request.form.get('password')
 
-# Prompt the user for the necessary values
-url = input("Enter the URL to monitor: ")
-sender_email = input("Enter your email address: ")
-receiver_email = input("Enter the receiver's email address: ")
-password = input("Enter your email password: ")
+        content = scrape_webpage(url)
 
-send_initial_notification(sender_email, receiver_email, password)
+        def check_for_updates():
+            nonlocal content
+            while True:
+                new_content = scrape_webpage(url)
+                if new_content != content:
+                    subject = "Webpage Update Notification"
+                    message = "The webpage content has been updated. Check it out."
+                    send_email(sender_email, receiver_email, password, subject, message)
+                    print("Email notification sent to", receiver_email)
+                    content = new_content
+                time.sleep(600)
 
-content = scrape_webpage(url)
-while True:
-    time.sleep(600)
-    print("Checking for updates...")
-    new_content = scrape_webpage(url)
-    if new_content != content:
-        subject = "Webpage Update Notification"
-        message = "The webpage content has been updated. Check it out."
-        send_email(sender_email, receiver_email, password, subject, message)
-        print("Email notification sent to", receiver_email)
-        content = new_content
-    else:
-        print("No updates found.")
+        thread = threading.Thread(target=check_for_updates)
+        thread.start()
+
+        return 'Monitoring started!'
+    return render_template('index.html')
+
+if __name__ == '__main__':
+    app.run(debug=True)
