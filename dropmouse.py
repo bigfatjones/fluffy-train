@@ -37,6 +37,11 @@ def home():
 
         content = scrape_webpage(url)
 
+        # Send an email to notify that monitoring has started
+        start_subject = "Webpage Monitoring Started"
+        start_message = f"The monitoring of the webpage at {url} has started."
+        send_email(sender_email, receiver_email, password, start_subject, start_message)
+
         def check_for_updates():
             nonlocal content
             while True:
