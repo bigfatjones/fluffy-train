@@ -1,3 +1,4 @@
+# dropmouse.py
 from flask import Flask, request, render_template
 import requests
 from bs4 import BeautifulSoup
@@ -46,13 +47,4 @@ def home():
                     message = "The webpage content has been updated. Check it out."
                     send_email(sender_email, receiver_email, password, subject, message)
                     content = new_content
-                time.sleep(600)
-
-        thread = threading.Thread(target=check_for_updates)
-        thread.start()
-
-        return 'Monitoring started!'
-    return render_template('index.html')
-
-if __name__ == '__main__':
-    app.run(debug=True)
+                time.sleep
