@@ -6,7 +6,7 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 import threading
 
-app = Flask(dropmouse)
+app = Flask(_name_)
 
 def scrape_webpage(url):
     print("Scraping webpage...")
