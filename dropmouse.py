@@ -1,4 +1,3 @@
-# dropmouse.py
 from flask import Flask, request, render_template
 import requests
 from bs4 import BeautifulSoup
@@ -24,7 +23,7 @@ def send_email(sender_email, receiver_email, password, subject, message):
 
     server = smtplib.SMTP('smtp.gmail.com', 587)
     server.starttls()
-    server.login(sender_email, password.encode('utf-8'))  # Encode the password using UTF-8
+    server.login(sender_email, password)  # No need to encode the password again
     server.sendmail(sender_email, receiver_email, msg.as_string())
     server.quit()
 
