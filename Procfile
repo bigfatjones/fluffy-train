@@ -1,2 +1,3 @@
-web: gunicorn dropmouse:dropmouse.py
+web: gunicorn dropmouse:app
+
 
