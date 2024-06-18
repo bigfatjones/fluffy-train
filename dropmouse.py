@@ -5,33 +5,27 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 import threading
+import time
 
-app = Flask(_name_)
+app = Flask(__name__)
 
 def scrape_webpage(url):
-    print("Scraping webpage...")
     response = requests.get(url)
     soup = BeautifulSoup(response.text, 'html.parser')
-    content = soup.get_text()
-    print("Webpage scraped successfully!")
-    return content
+    return soup.get_text()
 
 def send_email(sender_email, receiver_email, password, subject, message):
-    print("Sending email notification...")
     msg = MIMEMultipart()
     msg['From'] = sender_email
     msg['To'] = receiver_email
     msg['Subject'] = subject
     msg.attach(MIMEText(message, 'plain'))
-    try:
-        server = smtplib.SMTP('smtp.gmail.com', 587)
-        server.starttls()
-        server.login(sender_email, password)
-        server.sendmail(sender_email, receiver_email, msg.as_string())
-        print("Email notification sent successfully!")
-        server.quit()
-    except Exception as e:
-        print("Error occurred while sending email:", str(e))
+
+    server = smtplib.SMTP('smtp.gmail.com', 587)
+    server.starttls()
+    server.login(sender_email, password)
+    server.sendmail(sender_email, receiver_email, msg.as_string())
+    server.quit()
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
@@ -51,7 +45,6 @@ def home():
                     subject = "Webpage Update Notification"
                     message = "The webpage content has been updated. Check it out."
                     send_email(sender_email, receiver_email, password, subject, message)
-                    print("Email notification sent to", receiver_email)
                     content = new_content
                 time.sleep(600)
 
