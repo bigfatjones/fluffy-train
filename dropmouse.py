@@ -23,7 +23,8 @@ def send_email(sender_email, receiver_email, password, subject, message):
 
     server = smtplib.SMTP('smtp.gmail.com', 587)
     server.starttls()
-    server.login(sender_email, str(password))  # Ensure password is a string
+    # Ensure password is a string and encode it to UTF-8
+    server.login(sender_email, password.encode('utf-8'))  
     server.sendmail(sender_email, receiver_email, msg.as_string())
     server.quit()
 
@@ -33,7 +34,7 @@ def home():
         url = request.form.get('url')
         sender_email = request.form.get('sender_email')
         receiver_email = request.form.get('receiver_email')
-        password = request.form.get('password')
+        password = "hkaw cyeh vazh glul"  # Replace with your actual password
 
         content = scrape_webpage(url)
 
