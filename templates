@@ -1,1 +1,21 @@
 index.html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Webpage Monitor</title>
+</head>
+<body>
+    <h1>Webpage Monitor</h1>
+    <form method="POST">
+        <label for="url">URL:</label><br>
+        <input type="text" id="url" name="url"><br>
+        <label for="sender_email">Sender Email:</label><br>
+        <input type="text" id="sender_email" name="sender_email"><br>
+        <label for="receiver_email">Receiver Email:</label><br>
+        <input type="text" id="receiver_email" name="receiver_email"><br>
+        <label for="password">Password:</label><br>
+        <input type="password" id="password" name="password"><br>
+        <input type="submit" value="Start Monitoring">
+    </form>
+</body>
+</html>
